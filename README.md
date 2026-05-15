@@ -4,7 +4,7 @@
 
 ### **Integrantes**
 
-Jean Paul Rojas Herera
+Jean Paul Rojas Herrera
 
 Daniel Sundar Bonilla Bolaños
 
