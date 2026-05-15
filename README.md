@@ -19,9 +19,9 @@ Michael Dowglas Lenis Chaguendo
 - [Aplicación en el Código](#aplicación-en-el-código)
 - [Diagrama de Dependencias](#diagrama-de-dependencias)
 - [Beneficios del DIP en este Ejemplo](#beneficios-del-dip-en-este-ejemplo)
+- [Escalabilidad con Criptomoneda](#escalabilidad-con-criptomoneda)
 - [Estructura del ejercicio](#estructura-del-ejercicio)
 - [Instrucciones de uso](#instrucciones-de-uso)
-
 
 ## Dependency Inversion Principle (DIP) - Sistema de Pagos
 
@@ -42,7 +42,7 @@ En este ejemplo:
 
 - **Abstracción**: La interfaz `MetodoPago` define el contrato para procesar pagos.
 - **Módulo de alto nivel**: La clase `Tienda` depende de la abstracción `MetodoPago`, no de implementaciones concretas.
-- **Módulos de bajo nivel**: Las clases `PayPal` y `TarjetaCredito` implementan la interfaz y dependen de la abstracción.
+- **Módulos de bajo nivel**: Las clases `PayPal`, `TarjetaCredito` y `Criptomoneda` implementan la interfaz y dependen de la abstracción.
 - **Inyección de dependencias**: En `Main.java`, se inyectan las dependencias concretas en `Tienda`, permitiendo cambiar el método de pago sin modificar el código de `Tienda`.
 
 ## Diagrama de Dependencias
@@ -51,9 +51,9 @@ En este ejemplo:
 Tienda (alto nivel) --> MetodoPago (abstracción)
                               ^
                               |
-                 +------------+------------+
-                 |                         |
-          PayPal (bajo nivel)       TarjetaCredito (bajo nivel)
+          +-------------------+-------------------------+
+          |                   |                         |
+   PayPal (bajo nivel)  TarjetaCredito (bajo nivel)  Criptomoneda (bajo nivel)
 ```
 
 ## Beneficios del DIP en este Ejemplo
@@ -61,6 +61,12 @@ Tienda (alto nivel) --> MetodoPago (abstracción)
 - **Flexibilidad**: Se pueden agregar nuevos métodos de pago (ej. Bitcoin, Transferencia) sin modificar `Tienda`.
 - **Mantenibilidad**: Cambios en las implementaciones concretas no afectan el código de alto nivel.
 - **Testabilidad**: Facilita las pruebas unitarias al permitir mockear las dependencias.
+
+## Escalabilidad con `Criptomoneda`
+
+La clase `Criptomoneda` es un ejemplo de cómo el proyecto puede escalar fácilmente con nuevos métodos de pago.
+Al añadir una nueva implementación de `MetodoPago`, no es necesario cambiar la clase `Tienda` ni la lógica existente; basta con instanciar y pasar la nueva dependencia.
+Este enfoque reduce el acoplamiento y soporta la expansión futura del sistema con otros métodos de pago sin reescribir el módulo de alto nivel.
 
 ## Estructura del ejercicio
 
@@ -70,9 +76,9 @@ Tienda (alto nivel) --> MetodoPago (abstracción)
     - `MetodoPago.java`: Interfaz que define el método de pago.
     - `PayPal.java`: Implementación concreta para pagos con PayPal.
     - `TarjetaCredito.java`: Implementación concreta para pagos con tarjeta de crédito.
+    - `Criptomoneda.java`: Implementación concreta para pagos con criptomonedas.
   - `app/`:
     - `Tienda.java`: Clase que representa una tienda y procesa compras usando un método de pago.
-
 - `README.md`: Documentación
 
 ## Instrucciones de uso
@@ -81,7 +87,9 @@ Tienda (alto nivel) --> MetodoPago (abstracción)
 2. Compila y ejecuta el archivo `Main.java` para probar el ejercicio.
 
 ### Salida esperada:
+
 ```
 Pagando $500000.0 con tarjeta de crédito.
 Pagando $150000.0 con PayPal.
+Pagando $50000.0 con criptomonedas.
 ```
